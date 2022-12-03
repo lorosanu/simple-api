@@ -12,6 +12,7 @@ uvicorn = { version = "=0.20.0", extras = ["standard"] }
 
 [tool.poetry.scripts]
 simple_api = "simple_api.__main__:main"
+simple_api_check_validation = "simple_api.check_validation:validation"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
