@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "simple-api"
+version = "0.0.0"
+description = "Simple FastAPI service"
+authors = ["LS"]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.11"
+
+fastapi = ">=0.88.0"
+uvicorn = { version = "=0.20.0", extras = ["standard"] }
+
+[tool.poetry.scripts]
+simple_api = "simple_api.__main__:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
