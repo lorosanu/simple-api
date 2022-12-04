@@ -80,6 +80,32 @@ Note:
 * still see the memory increase here
 * trying to kill the interactive container with CTRL+C will keep generating new PIDs, stop it with `docker stop <container_id>`
 
+### Check the api with hypercorn server
+
+* building the docker image
+    ```bash
+    docker build -f Dockerfile.hypercorn -t simple_api_hypercorn .
+    ```
+* starting up the container
+    ```bash
+    docker run --rm --name simple_api_hypercorn simple_api_hypercorn
+    ```
+* keep an eye on docker memory usage
+    ```bash
+    docker stats
+    ```
+* send random sized requests to the service
+    ```bash
+    ./send_mixed_requests.sh &
+    # wait a few minutes
+    ./send_mixed_requests.sh "ceci est un texte aléatoire. " &
+    # wait a few minutes
+    ./send_mixed_requests.sh "Dies ist ein Zufallstext." &
+    ```
+
+Sample grafana panel
+![grafana_simple_api_hypercorn.png](grafana_simple_api_hypercorn.png)
+
 ## Track memory increse over time
 
 * starting the server
@@ -87,7 +113,8 @@ Note:
     docker run --rm -p 8080:8080 -v $PWD:/repo -w /repo -it python:3.10 bash
     pip install dist/*.whl
     pip install memory_profiler
-    mprof run simple_api
+    pip install hypercorn
+    mprof run hypercorn --bind 0.0.0.0:8080 simple_api.app:app
     ```
 * send random sized requests to the service
     ```bash
@@ -102,4 +129,4 @@ Note:
     mprof plot
     ```
 
-Sample plot: ![mprof_plot_exp2.png](mprof_plot_exp2.png)
+Sample plot: ![mprof_plot_hypercorn.png](mprof_plot_hypercorn.png)
