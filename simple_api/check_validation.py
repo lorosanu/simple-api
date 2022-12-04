@@ -3,7 +3,7 @@ from simple_api.app import Document
 
 # define a random longer length text (can go over the 1000 chars limit)
 def _define_random_text(text):
-    n = random.randint(1, 100)
+    n = random.randint(1, 4000)
     doc_text = text * n
     return ''.join(random.sample(doc_text, len(doc_text)))
 

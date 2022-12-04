@@ -2,8 +2,8 @@ from typing import Dict
 from pydantic import BaseModel, Field, constr, root_validator
 from fastapi import FastAPI
 
-# enforce a maximum of 1000 chars per input text
-class DocText(constr(max_length=1000)):
+# enforce a maximum of 50k chars per input text
+class DocText(constr(max_length=50000)):
     __root__: str
 
 class Document(BaseModel):
