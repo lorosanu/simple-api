@@ -20,65 +20,20 @@ Minimal reproducible example to showcase [Issue #1624](https://github.com/tiango
     ```
 * building the docker image
     ```bash
-    docker build -t simple_api .
+    docker build -t simple_api_starlette .
     ```
 * starting up the container
     ```bash
-    docker run --rm -p 8080:8080 --name simple_api simple_api
+    docker run --rm -p 8080:8080 --name simple_api_starlette simple_api_starlette
     ```
 * keep an eye on docker memory usage
     ```bash
     docker stats
     ```
 * send random sized requests to the service
-    * only valid input
-        ```bash
-        ./send_ok_requests.sh
-        ```
-    * mixed valid and invalid input
-        ```bash
-        ./send_mixed_requests.sh
-        ```
-
-Note: the memory increase is most visible on invalid requests
-
-## Rule out other possible culprits
-
-### Check only the logic + pydantic validation
-
-* building the docker image
     ```bash
-    docker build -f Dockerfile.check_validation -t simple_api_check_validation .
+    ./send_mixed_requests.sh
     ```
-* starting up the container
-    ```bash
-    docker run --rm --name simple_api_check_validation simple_api_check_validation
-    ```
-* keep an eye on docker memory usage
-    ```bash
-    docker stats
-    ```
-
-Note: don't see any change here
-
-### Check only the api without uvicorn server
-
-* building the docker image
-    ```bash
-    docker build -f Dockerfile.check_client -t simple_api_check_client .
-    ```
-* starting up the container
-    ```bash
-    docker run --rm --name simple_api_check_client simple_api_check_client
-    ```
-* keep an eye on docker memory usage
-    ```bash
-    docker stats
-    ```
-
-Note: 
-* still see the memory increase here
-* trying to kill the interactive container with CTRL+C will keep generating new PIDs, stop it with `docker stop <container_id>`
 
 ## Track memory increse over time
 
@@ -91,11 +46,15 @@ Note:
     ```
 * send random sized requests to the service
     ```bash
-    ./send_mixed_requests.sh
+    ./send_mixed_requests.sh &
+    # wait a few minutes
+    ./send_mixed_requests.sh "ceci est un texte aléatoire. " &
+    # wait a few minutes
+    ./send_mixed_requests.sh "Dies ist ein Zufallstext." &
     ```
 * stop the server and plot the memory increase
     ```bash
     mprof plot
     ```
 
-Sample plot: ![mprof_plot.png](mprof_plot.png)
+Sample plot: ![mprof_plot_starlette.png](mprof_plot_starlette.png)
