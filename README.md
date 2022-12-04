@@ -91,11 +91,15 @@ Note:
     ```
 * send random sized requests to the service
     ```bash
-    ./send_mixed_requests.sh
+    ./send_mixed_requests.sh &
+    # wait a few minutes
+    ./send_mixed_requests.sh "ceci est un texte aléatoire. " &
+    # wait a few minutes
+    ./send_mixed_requests.sh "Dies ist ein Zufallstext." &
     ```
 * stop the server and plot the memory increase
     ```bash
     mprof plot
     ```
 
-Sample plot: ![mprof_plot.png](mprof_plot.png)
+Sample plot: ![mprof_plot_exp2.png](mprof_plot_exp2.png)
